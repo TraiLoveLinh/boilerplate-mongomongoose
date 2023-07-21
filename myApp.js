@@ -1,3 +1,14 @@
+const people = [
+  { name: "John", age: 25, favoriteFoods: ["pizza"] },
+  { name: "Mary", age: 30, favoriteFoods: ["burger"] },
+  { name: "Peter", age: 35, favoriteFoods: ["tacos"] },
+  { name: "Susan", age: 40, favoriteFoods: ["ice cream"] },
+  { name: "David", age: 45, favoriteFoods: ["spaghetti"] }
+];
+
+
+
+// touch less field
 require('dotenv').config();
 const mongoose = require('mongoose');
 const mongo_URI = process.env.MONGO_URI;
@@ -32,7 +43,12 @@ const createManyPeople = (arrayOfPeople, done) => {
     done(null, person);
   })
 };
-
+/*
+createManyPeople(people, (err, person) => {
+  if (err) return console.error(err);
+  console.log(person);
+})
+*/
 const findPeopleByName = (personName, done) => {
   Person.find({name: personName}, (err, data) => {
     if (err) return console.error(err);
@@ -53,20 +69,27 @@ const findPersonById = (personId, done) => {
   });
 };
 
+
+
 const findEditThenSave = (personId, done) => {
   const foodToAdd = "hamburger";
-
-  done(null /*, data*/);
-};
+  findPersonById(personId, (err, person) => {
+    if (err) return console.error(err);
+    person.favoriteFoods.push(foodToAdd);
+    person.save((err, updatePerson) => {
+      if (err) return console.error(err);
+      done(null, updatePerson);
+    });
+  });
+}
 
 const findAndUpdate = (personName, done) => {
   const ageToSet = 20;
-
-  done(null /*, data*/);
+  done(null);
 };
 
 const removeById = (personId, done) => {
-  done(null /*, data*/);
+  done(null /*, data*/)
 };
 
 const removeManyPeople = (done) => {
