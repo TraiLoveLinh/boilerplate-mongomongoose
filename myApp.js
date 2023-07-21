@@ -108,15 +108,14 @@ const removeManyPeople = (done) => {
 
 const queryChain = (done) => {
   const foodToSearch = "burrito";
-  //let findQuery = Person.find({favoriteFoods: foodToSearch});
   Person.find({favoriteFoods: foodToSearch})
   .sort({name: 1})
   .limit(2)
-  .select({name: 1, age: 0, favoriteFoods:1})
-  .exec((err, data) => {
-    if (err) console.error(err);
+  .select({name: 1, favoriteFoods:1}/*, age: 0 | but it send a bug i don't know why*/)
+  .exec(function(err, data){
+    if (err) return console.error(err);
     done(null, data);
-  });
+  })
 };
 
 /** **Well Done !!**
